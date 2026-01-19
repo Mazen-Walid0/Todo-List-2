@@ -25,11 +25,13 @@ export default function Todo({ todo }) {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [showEditDialog, setShowEditDialog] = useState(false);
 
+  // Local state to store edited todo data
   const [editTodo, setEditTodo] = useState({
     title: todo.title,
     details: todo.details,
   });
 
+  // Remove selected todo from the list
   function handleDeleteConfirm() {
     const updatedTodos = todos.filter((t) => t.id !== todo.id);
     setTodos(updatedTodos);
@@ -37,6 +39,7 @@ export default function Todo({ todo }) {
     setShowDeleteDialog(false);
   }
 
+  // Save edited todo changes
   function handleEditConfirm() {
     const updatedTodos = todos.map((t) =>
       t.id === todo.id
@@ -48,20 +51,27 @@ export default function Todo({ todo }) {
     setShowEditDialog(false);
   }
 
+  // Open delete confirmation dialog
   function handleDeleteDialogOpen() {
     setShowDeleteDialog(true);
   }
+
+  // Close delete confirmation dialog
   function handleDeleteDialogClose() {
     setShowDeleteDialog(false);
   }
 
+  // Open edit dialog
   function handleEditDialogOpen() {
     setShowEditDialog(true);
   }
+
+  // Close edit dialog
   function handleEditDialogClose() {
     setShowEditDialog(false);
   }
 
+  // Toggle todo completion status
   function handleCheckClick() {
     const updatedTodos = todos.map((t) =>
       t.id === todo.id ? { ...t, isCompleted: !t.isCompleted } : t,

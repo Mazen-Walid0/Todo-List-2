@@ -1,4 +1,6 @@
-// Material Ui
+// =======================
+// Material UI Components
+// =======================
 import Container from "@mui/material/Container";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -9,46 +11,80 @@ import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
-// Components
+
+// =======================
+// Custom Components
+// =======================
 import Todo from "./Todo.";
 import { TodosContext } from "../contexts/todosContext";
 
+// =======================
+// React Hooks
+// =======================
 import { useEffect, useState, useContext } from "react";
 
-// Others
+// =======================
+// Utilities
+// =======================
 import { v4 as uuidv4 } from "uuid";
 
+// =======================
+// TodoList Component
+// =======================
 export default function TodoList() {
+  // Get todos state from context
   const { todos, setTodos } = useContext(TodosContext);
+
+  // State for form inputs
   const [detailsInput, setDetailsInput] = useState("");
   const [titleInput, setTitleInput] = useState("");
+
+  // State for filtering displayed todos
   const [displayedTodosType, setDisplayedTodosType] = useState("all");
 
+  // =======================
+  // Add New Todo Handler
+  // =======================
   function handleAddClick() {
     const newTodo = {
-      id: uuidv4(),
-      title: titleInput,
-      details: detailsInput,
-      isCompleted: false,
+      id: uuidv4(), // Generate unique ID
+      title: titleInput, // Todo title
+      details: detailsInput, // Todo details
+      isCompleted: false, // Completion status
     };
 
+    // Update state with new todo
     setTodos((prev) => [...prev, newTodo]);
+
+    // Save updated todos to localStorage
     localStorage.setItem("todos", JSON.stringify([...todos, newTodo]));
+
+    // Reset input fields
     setTitleInput("");
     setDetailsInput("");
   }
 
   useEffect(() => {
     const todosLocalStorage = JSON.parse(localStorage.getItem("todos"));
+    // Load todos from localStorage on initial render only
+    // setTodos is added to dependency array to follow React Hooks rules
     todosLocalStorage && setTodos(todosLocalStorage);
-  }, []);
+  }, [setTodos]);
 
+  // =======================
+  // Change Filter Type
+  // =======================
   function changeDisplayedType(e) {
     setDisplayedTodosType(e.target.value);
   }
+
+  // Filter completed todos
   const completedTodos = todos.filter((t) => t.isCompleted);
+
+  // Filter non-completed todos
   const notCompletedTodos = todos.filter((t) => !t.isCompleted);
 
+  // Determine which todos to render
   let todosToBeRendered = todos;
 
   if (displayedTodosType === "completed") {
@@ -57,14 +93,21 @@ export default function TodoList() {
     todosToBeRendered = notCompletedTodos;
   }
 
+  // Map todos to JSX components
   const todosJsx = todosToBeRendered.map((t) => <Todo todo={t} key={t.id} />);
+
   return (
+    // Main container
     <Container maxWidth="md" style={{ textAlign: "center" }}>
       <Card>
         <CardContent>
+          {/* App title */}
           <Typography variant="h1">مهامى</Typography>
           <Divider />
-          {/* Start Toggle Buttons Group*/}
+
+          {/* =======================
+              Toggle Buttons Group
+             ======================= */}
           <ToggleButtonGroup
             style={{ direction: "ltr", marginTop: "30px" }}
             value={displayedTodosType}
@@ -76,20 +119,24 @@ export default function TodoList() {
             <ToggleButton value="completed">المنجز</ToggleButton>
             <ToggleButton value="all">الكل</ToggleButton>
           </ToggleButtonGroup>
-          {/* End Toggle Buttons Group*/}
-          {/* Start All Todos */}
+
+          {/* =======================
+              Todos List Container
+             ======================= */}
           <div
             style={{
               maxHeight: "300px",
               overflowY: "auto",
-              // marginTop: "20px",
             }}
           >
             {todosJsx}
           </div>
-          {/* End All Todos */}
-          {/* Start Input + Add Button */}
+
+          {/* =======================
+              Input Fields + Add Button
+             ======================= */}
           <Grid container sx={{ marginTop: 3 }} spacing={2}>
+            {/* Inputs section */}
             <Grid size={8} display="flex" flexDirection="column" gap={2}>
               <TextField
                 label="عنوان المهمة"
@@ -110,7 +157,7 @@ export default function TodoList() {
               />
             </Grid>
 
-            {/* Button */}
+            {/* Add button section */}
             <Grid
               size={4}
               display="flex"
@@ -127,7 +174,6 @@ export default function TodoList() {
               </Button>
             </Grid>
           </Grid>
-          {/* End Input + Add Button */}
         </CardContent>
       </Card>
     </Container>
