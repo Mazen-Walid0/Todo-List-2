@@ -120,3 +120,90 @@ body {
 ::-webkit-scrollbar-track {
   background: transparent;
 }
+/* ===============================
+  Responsive adjustments for screens < 600px
+=============================== */
+@media (max-width: 600px) {
+  /* Main container adjustments */
+  .MuiContainer-root {
+    width: 95% !important; /* Shrink container width */
+    padding: 8px !important; /* Less padding */
+  }
+
+  /* Card inside container */
+  .MuiCard-root {
+    padding: 8px !important; /* Shrink padding */
+  }
+
+  /* Main title */
+  .MuiTypography-h1 {
+    font-size: 1.5rem !important; /* Smaller title */
+  }
+
+  /* Toggle buttons */
+  .MuiToggleButton-root {
+    font-size: 0.75rem !important; /* Smaller text */
+    padding: 4px 8px !important; /* Smaller padding */
+  }
+
+  /* Inputs section */
+  .MuiTextField-root {
+    font-size: 0.8rem !important; /* Smaller text */
+  }
+
+  /* Add button */
+  .MuiButton-root {
+    font-size: 0.75rem !important; /* Smaller text */
+    height: 40px !important; /* Shorter button */
+  }
+
+  /* Todos list scrollable container */
+  div[style*="overflowY: auto"] {
+    max-height: 200px !important; /* Smaller height */
+  }
+}
+/* ===============================
+  Responsive adjustments for screens < 600px
+=============================== */
+@media (max-width: 600px) {
+  /* Todo card adjustments */
+  .todo-card {
+    width: 95% !important;
+    margin: 10px auto;
+    padding: 8px !important;
+  }
+
+  /* Todo title */
+  .todo-card .MuiTypography-h5 {
+    font-size: 0.9rem !important; /* Smaller title font */
+    text-align: right !important;
+  }
+
+  /* Todo details */
+  .todo-card .MuiTypography-h6 {
+    font-size: 0.75rem !important; /* Smaller details font */
+    text-align: right !important;
+  }
+
+  /* Make the Grid container column */
+  .todo-card .MuiGrid-container {
+    flex-direction: column !important; /* Stack content vertically */
+    align-items: stretch !important;
+  }
+
+  /* Button section below text */
+  .todo-card .MuiGrid-item:last-child {
+    display: flex !important;
+    justify-content: space-around !important;
+    margin-top: 8px !important;
+  }
+
+  /* Icon buttons adjustments */
+  .todo-card .MuiIconButton-root {
+    padding: 4px !important; /* Smaller button padding */
+  }
+
+  .todo-card .MuiIconButton-root svg {
+    font-size: 18px !important; /* Smaller icons */
+  }
+}

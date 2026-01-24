@@ -74,9 +74,7 @@ export default function Todo({ todo, showDelete, showEdit }) {
               </Typography>
             </Grid>
 
-            {/* =======================
-               Action Buttons Section
-               ======================= */}
+            {/* Action Buttons Section*/}
             <Grid
               size={4}
               display="flex"
