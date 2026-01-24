@@ -1,4 +1,6 @@
-// Material Ui
+// =======================
+// Material UI Components
+// =======================
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
@@ -7,191 +9,85 @@ import CheckIcon from "@mui/icons-material/Check";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-// End
+// =======================
 
-import { useState } from "react";
+// Import React hooks and contexts
 import { useContext } from "react";
 import { TodosContext } from "../contexts/todosContext";
+import { ToastContext } from "../contexts/ToastContext";
 
-export default function Todo({ todo }) {
-  const { todos, setTodos } = useContext(TodosContext);
-  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
-  const [showEditDialog, setShowEditDialog] = useState(false);
+// Todo item component
+export default function Todo({ todo, showDelete, showEdit }) {
+  // Access dispatcher for todos state management
+  const { dispatch } = useContext(TodosContext);
 
-  // Local state to store edited todo data
-  const [editTodo, setEditTodo] = useState({
-    title: todo.title,
-    details: todo.details,
-  });
-
-  // Remove selected todo from the list
-  function handleDeleteConfirm() {
-    const updatedTodos = todos.filter((t) => t.id !== todo.id);
-    setTodos(updatedTodos);
-    localStorage.setItem("todos", JSON.stringify(updatedTodos));
-    setShowDeleteDialog(false);
-  }
-
-  // Save edited todo changes
-  function handleEditConfirm() {
-    const updatedTodos = todos.map((t) =>
-      t.id === todo.id
-        ? { ...t, title: editTodo.title, details: editTodo.details }
-        : t,
-    );
-    setTodos(updatedTodos);
-    localStorage.setItem("todos", JSON.stringify(updatedTodos));
-    setShowEditDialog(false);
-  }
-
-  // Open delete confirmation dialog
-  function handleDeleteDialogOpen() {
-    setShowDeleteDialog(true);
-  }
-
-  // Close delete confirmation dialog
-  function handleDeleteDialogClose() {
-    setShowDeleteDialog(false);
-  }
-
-  // Open edit dialog
-  function handleEditDialogOpen() {
-    setShowEditDialog(true);
-  }
-
-  // Close edit dialog
-  function handleEditDialogClose() {
-    setShowEditDialog(false);
-  }
+  // Access toast notification handler
+  const { showHideToast } = useContext(ToastContext);
 
   // Toggle todo completion status
   function handleCheckClick() {
-    const updatedTodos = todos.map((t) =>
-      t.id === todo.id ? { ...t, isCompleted: !t.isCompleted } : t,
-    );
-    setTodos(updatedTodos);
-    localStorage.setItem("todos", JSON.stringify(updatedTodos));
+    dispatch({ type: "toggledCompleted", payload: { id: todo.id } });
+
+    // Show feedback message based on completion state
+    !todo.isCompleted
+      ? showHideToast("تم إتمام المهمة بنجاح")
+      : showHideToast("أصبحت المهمة غير منجزه");
   }
 
   return (
     <>
-      {/* Start Delete Modal */}
-      <Dialog
-        sx={{ direction: "rtl" }}
-        open={showDeleteDialog}
-        onClose={handleDeleteDialogClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">
-          هل أنت متأكد من حذف المهمة؟
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            لا يمكنك التراجع بعد الضغط على زرار الحذف
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleDeleteDialogClose}>إلغاء</Button>
-          <Button onClick={handleDeleteConfirm} autoFocus>
-            نعم قم بالحذف
-          </Button>
-        </DialogActions>
-      </Dialog>
-      {/* End Delete Modal */}
-      {/* Start Edit Modal */}
-      <Dialog
-        sx={{ direction: "rtl" }}
-        open={showEditDialog}
-        onClose={handleEditDialogClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">تعديل المهمة</DialogTitle>
-        <DialogContent>
-          <TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            label="عنوان المهمة"
-            fullWidth
-            variant="standard"
-            value={editTodo.title}
-            onChange={(e) =>
-              setEditTodo({ ...editTodo, title: e.target.value })
-            }
-          />
-          <TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            label="التفاصيل"
-            fullWidth
-            variant="standard"
-            value={editTodo.details}
-            onChange={(e) =>
-              setEditTodo({ ...editTodo, details: e.target.value })
-            }
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleEditDialogClose}>إلغاء</Button>
-          <Button onClick={handleEditConfirm} autoFocus>
-            نعم قم باتعديل
-          </Button>
-        </DialogActions>
-      </Dialog>
-      {/* End Edit Modal */}
+      {/* Main todo card container */}
       <Card
         className="todo-card"
         sx={{
           minWidth: 275,
-          backgroundColor: "#283593",
-          color: "white",
-          marginTop: 5,
+          backgroundColor: "#283593", // Card background color
+          color: "white", // Text color
+          marginTop: 5, // Vertical spacing
         }}
       >
         <CardContent>
+          {/* Layout container for todo content */}
           <Grid container spacing={2}>
+            {/* Todo text section */}
             <Grid size={8}>
+              {/* Todo title */}
               <Typography
                 variant="h5"
                 sx={{
                   textAlign: "right",
-                  textDecoration: todo.isCompleted && "line-through",
+                  textDecoration: todo.isCompleted && "line-through", // Strike when completed
                 }}
               >
                 {todo.title}
               </Typography>
+
+              {/* Todo details */}
               <Typography
                 variant="h6"
                 sx={{
                   textAlign: "right",
-                  textDecoration: todo.isCompleted && "line-through",
+                  textDecoration: todo.isCompleted && "line-through", // Strike when completed
                 }}
               >
                 {todo.details}
               </Typography>
             </Grid>
-            {/* Icons Buttons */}
+
+            {/* =======================
+               Action Buttons Section
+               ======================= */}
             <Grid
               size={4}
               display="flex"
               justifyContent="space-around"
               alignItems="center"
             >
-              {/* Start Check Icon Button */}
+              {/* Toggle completion button */}
               <IconButton
-                onClick={() => handleCheckClick()}
+                onClick={() => handleCheckClick()} // Toggle completed state
                 className="iconButtons"
-                aria-label="delete"
+                aria-label="complete"
                 sx={{
                   color: todo.isCompleted ? "white" : "#8bc34a",
                   backgroundColor: todo.isCompleted ? "#8bc34a" : "white",
@@ -200,11 +96,12 @@ export default function Todo({ todo }) {
               >
                 <CheckIcon />
               </IconButton>
-              {/* End Check Icon Button */}
+
+              {/* Edit todo button */}
               <IconButton
-                onClick={handleEditDialogOpen}
+                onClick={() => showEdit(todo)} // Open edit dialog
                 className="iconButtons"
-                aria-label="delete"
+                aria-label="edit"
                 sx={{
                   color: "#1769aa",
                   backgroundColor: "white",
@@ -213,8 +110,10 @@ export default function Todo({ todo }) {
               >
                 <EditIcon />
               </IconButton>
+
+              {/* Delete todo button */}
               <IconButton
-                onClick={handleDeleteDialogOpen}
+                onClick={() => showDelete(todo)} // Open delete dialog
                 className="iconButtons"
                 aria-label="delete"
                 sx={{

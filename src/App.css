@@ -1,6 +1,6 @@
 /* ===============================
-  Custom Fonts - Alexandria
-============================== */
+   Custom Fonts - Alexandria
+   =============================== */
 
 /* Thin weight (100) */
 @font-face {
@@ -65,6 +65,8 @@
   font-weight: 900;
 }
 
+/* Global Reset */
+
 /* Apply border-box model to all elements */
 * {
   box-sizing: border-box;
@@ -75,11 +77,9 @@ body {
   margin: 0;
 }
 
-/* ===============================
-  Icon Buttons Styles
-============================== */
+/* Icon Buttons Styles */
 
-/* Smooth transition effect */
+/* Smooth transition effect for hover/interaction */
 .iconButtons {
   transition: all 0.3s !important;
 }
@@ -87,14 +87,12 @@ body {
 /* Hover effect for icon buttons */
 .iconButtons:hover {
   background-color: #c5c5c5 !important;
-  box-shadow: 0px 7px 7px rgb(0, 0, 0, 0.4) !important;
+  box-shadow: 0px 7px 7px rgba(0, 0, 0, 0.4) !important;
 }
 
-/* ===============================
-  Todo Card Styles
-============================== */
+/* Todo Card Styles */
 
-/* Smooth transition effect */
+/* Smooth transition for card hover effects */
 .todo-card {
   transition: all 0.3s !important;
 }
@@ -102,25 +100,23 @@ body {
 /* Hover effect for todo cards */
 .todo-card:hover {
   padding-bottom: 20px;
-  box-shadow: 0px 7px 7px rgb(0, 0, 0, 0.4) !important;
+  box-shadow: 0px 7px 7px rgba(0, 0, 0, 0.4) !important;
 }
 
-/* ===============================
-  Custom Scrollbar
-============================== */
+/* Custom Scrollbar  */
 
 /* Scrollbar width */
 ::-webkit-scrollbar {
   width: 6px;
 }
 
-/* Scrollbar thumb style */
+/* Scrollbar thumb (the draggable part) */
 ::-webkit-scrollbar-thumb {
   background: #bbb;
   border-radius: 10px;
 }
 
-/* Scrollbar track style */
+/* Scrollbar track (background) */
 ::-webkit-scrollbar-track {
   background: transparent;
 }
